@@ -3,6 +3,7 @@ package com.codepath.nytimes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.parceler.Parcels;
 
@@ -19,5 +20,6 @@ public class UserActivity extends AppCompatActivity {
         Log.d(TAG, "User id is : "+user.getId());
         Log.d(TAG, "User id is : "+user.getName());
         Log.d(TAG, "User id is : "+user.getRollNumber());
+        Toast.makeText(this,"Welcome to the new Activity",Toast.LENGTH_LONG).show();
     }
 }

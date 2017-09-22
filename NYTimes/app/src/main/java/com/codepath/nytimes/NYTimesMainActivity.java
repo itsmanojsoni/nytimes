@@ -12,20 +12,25 @@ import android.widget.Button;
 import org.parceler.Parcel;
 import org.parceler.Parcels;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class NYTimesMainActivity extends AppCompatActivity {
 
     private Context context;
+    @BindView(R.id.btnClick) Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nytimes_main);
+        ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        Button button = (Button) findViewById(R.id.btnClick);
+//        Button button = (Button) findViewById(R.id.btnClick);
 
         context = (Context) this;
 
