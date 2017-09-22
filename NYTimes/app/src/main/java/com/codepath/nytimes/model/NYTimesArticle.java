@@ -11,6 +11,11 @@ public class NYTimesArticle {
     String source;
     String pub_date;
     String new_desk;
+    String web_url;
+
+    public String getWeb_url() {
+        return web_url;
+    }
 
     public List<Multimedia> getMultimediaList() {
         return multimediaList;

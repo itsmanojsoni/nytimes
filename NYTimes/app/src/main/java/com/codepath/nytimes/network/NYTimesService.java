@@ -3,6 +3,7 @@ package com.codepath.nytimes.network;
 import android.support.annotation.NonNull;
 
 import com.codepath.nytimes.model.NYTimesResponse;
+import com.codepath.nytimes.model.result;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -19,5 +20,5 @@ import static android.R.attr.key;
 public interface NYTimesService {
 
     @GET("/svc/search/v2/articlesearch.json")
-    Observable<NYTimesResponse> getArticles(@Query("q") String query,@Query("api-key") String api_key);
+    Observable<result> getArticles(@Query("q") String query, @Query("api-key") String api_key);
 }

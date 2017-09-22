@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.codepath.nytimes.model.NYTimesArticle;
 import com.codepath.nytimes.model.NYTimesResponse;
+import com.codepath.nytimes.model.result;
 import com.codepath.nytimes.network.NYTimesService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -47,7 +48,7 @@ public class NYTimesRepository {
         return instance;
     }
 
-    public Observable<NYTimesResponse> getArticles(@NonNull String query) {
+    public Observable<result> getArticles(@NonNull String query) {
         return nyTimesService.getArticles(query,API_KEY);
     }
 
