@@ -84,19 +84,18 @@ public class NYTimesListAdapter extends
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.d(TAG, "OnBind View Holder");
+        Log.d(TAG, "OnBind View Holder and position is : "+position);
         NYTimesArticle nyTimesArticle = nyTimesArticleList.get(position);
-
-        String thumbnailUrl = "http://www.nytimes.com/" + nyTimesArticle.getMultimediaList().get(0).getUrl();
-
 
         String headline = nyTimesArticle.getHeadlines();
         holder.tvTitle.setText(headline);
 
-        Log.d(TAG, "thumbnail Url = "+thumbnailUrl);
-        Log.d(TAG, "Title = "+headline);
 
-        Glide.with(context).load(thumbnailUrl).dontAnimate().into(holder.ivStoryThumbnail);
+        if (nyTimesArticle.getMultimediaList() != null && (nyTimesArticle.getMultimediaList().size() > 0)) {
+            Log.d(TAG, "What is the Size = "+nyTimesArticle.getMultimediaList().size());
+            String thumbnailUrl = "http://www.nytimes.com/" + nyTimesArticle.getMultimediaList().get(0).getUrl();
+            Glide.with(context).load(thumbnailUrl).dontAnimate().into(holder.ivStoryThumbnail);
+        }
 
         //Todo: Setup viewholder for item 
         holder.bind(nyTimesArticle, onItemClickListener);
