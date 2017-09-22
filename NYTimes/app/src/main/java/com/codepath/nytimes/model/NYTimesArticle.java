@@ -13,6 +13,17 @@ public class NYTimesArticle {
     String new_desk;
     String web_url;
 
+    public String getHeadlines() {
+        return headline.getMain();
+    }
+
+    public List<Multimedia> getMultimedia() {
+        return multimedia;
+    }
+
+    Headline headline;
+
+
     public String getWeb_url() {
         return web_url;
     }
@@ -37,5 +48,18 @@ public class NYTimesArticle {
 
     public String getNew_desk() {
         return new_desk;
+    }
+
+    private class Headline {
+        String main;
+        String print_headline;
+
+        public String getMain() {
+            return main;
+        }
+
+        public String getPrint_headline() {
+            return print_headline;
+        }
     }
 }

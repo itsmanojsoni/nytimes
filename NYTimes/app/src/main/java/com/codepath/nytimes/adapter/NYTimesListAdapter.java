@@ -2,10 +2,14 @@ package com.codepath.nytimes.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.nytimes.R;
 import com.codepath.nytimes.model.NYTimesArticle;
 
@@ -31,21 +35,29 @@ public class NYTimesListAdapter extends
         this.onItemClickListener = onItemClickListener;
     }
     public void setData(List<NYTimesArticle> nyTimesArticles) {
-        this.nyTimesArticleList = nyTimesArticles;
+//        nyTimesArticleList.clear();
+//        nyTimesArticleList.addAll(nyTimesArticles);
+        nyTimesArticleList = nyTimesArticles;
     }
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Todo Butterknife bindings
 
+        ImageView ivStoryThumbnail;
+        TextView    tvTitle;
+
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
+            ivStoryThumbnail = itemView.findViewById(R.id.ivStoryThumbnail);
+            tvTitle =   itemView.findViewById(R.id.tvStoryTitle);
         }
 
         public void bind(final NYTimesArticle model,
                          final OnItemClickListener listener) {
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -72,15 +84,28 @@ public class NYTimesListAdapter extends
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        NYTimesArticle item = nyTimesArticleList.get(position);
+        Log.d(TAG, "OnBind View Holder");
+        NYTimesArticle nyTimesArticle = nyTimesArticleList.get(position);
+
+        String thumbnailUrl = "http://www.nytimes.com/" + nyTimesArticle.getMultimediaList().get(0).getUrl();
+
+
+        String headline = nyTimesArticle.getHeadlines();
+        holder.tvTitle.setText(headline);
+
+        Log.d(TAG, "thumbnail Url = "+thumbnailUrl);
+        Log.d(TAG, "Title = "+headline);
+
+        Glide.with(context).load(thumbnailUrl).dontAnimate().into(holder.ivStoryThumbnail);
 
         //Todo: Setup viewholder for item 
-        holder.bind(item, onItemClickListener);
+        holder.bind(nyTimesArticle, onItemClickListener);
     }
 
 
     @Override
     public int getItemCount() {
+        Log.d(TAG, "Item Size = "+nyTimesArticleList.size());
         return nyTimesArticleList.size();
     }
 

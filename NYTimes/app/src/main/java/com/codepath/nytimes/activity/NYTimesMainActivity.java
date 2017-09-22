@@ -66,7 +66,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
             public void onItemClick(int position) {
 
                 Log.d(TAG, "article clicked at position");
-
+    
             }
         });
 
@@ -112,8 +112,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(SearchResult SearchResult) {
-                        Log.d(TAG, "In onNext() and nyTimesRespons is : "+ SearchResult);
+                    public void onNext(SearchResult searchResult) {Log.d(TAG, "In onNext() and nyTimesRespons is : "+ searchResult);
 //                        adapter.setGitHubRepos(gitHubRepos);
 
                         // get the data and see if we can display it in the adapter
@@ -122,6 +121,8 @@ public class NYTimesMainActivity extends AppCompatActivity {
 //
 //                        Log.d(TAG,"web_url = "+nyTimesArticles.get(0).getWeb_url());
 
+                        nyTimesListAdapter.setData(searchResult.getNyTimesResponse().getNYTimesArticleList());
+                        nyTimesListAdapter.notifyDataSetChanged();
 
                     }
                 });
