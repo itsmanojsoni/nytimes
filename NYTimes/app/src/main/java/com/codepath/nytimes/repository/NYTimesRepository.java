@@ -1,19 +1,13 @@
 package com.codepath.nytimes.repository;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.codepath.nytimes.model.NYTimesArticle;
-import com.codepath.nytimes.model.NYTimesResponse;
-import com.codepath.nytimes.model.result;
+import com.codepath.nytimes.model.SearchResult;
 import com.codepath.nytimes.network.NYTimesService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.List;
-
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -48,7 +42,7 @@ public class NYTimesRepository {
         return instance;
     }
 
-    public Observable<result> getArticles(@NonNull String query) {
+    public Observable<SearchResult> getArticles(@NonNull String query) {
         return nyTimesService.getArticles(query,API_KEY);
     }
 

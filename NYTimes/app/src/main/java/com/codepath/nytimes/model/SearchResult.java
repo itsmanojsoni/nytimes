@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by manoj on 9/22/17.
  */
 
-public class result {
+public class SearchResult {
 
     public NYTimesResponse getNyTimesResponse() {
         return nyTimesResponse;

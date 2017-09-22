@@ -1,7 +1,6 @@
 package com.codepath.nytimes.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,22 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
 
 import com.codepath.nytimes.R;
-import com.codepath.nytimes.User;
-import com.codepath.nytimes.UserActivity;
 import com.codepath.nytimes.adapter.NYTimesListAdapter;
-import com.codepath.nytimes.model.NYTimesArticle;
-import com.codepath.nytimes.model.NYTimesResponse;
-import com.codepath.nytimes.model.result;
+import com.codepath.nytimes.model.SearchResult;
 import com.codepath.nytimes.repository.NYTimesRepository;
-
-import org.parceler.Parcel;
-import org.parceler.Parcels;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -111,7 +99,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
                 .getArticles(query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<result>() {
+                .subscribe(new Observer<SearchResult>() {
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "In onCompleted()");
@@ -124,8 +112,8 @@ public class NYTimesMainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(result result) {
-                        Log.d(TAG, "In onNext() and nyTimesRespons is : "+result);
+                    public void onNext(SearchResult SearchResult) {
+                        Log.d(TAG, "In onNext() and nyTimesRespons is : "+ SearchResult);
 //                        adapter.setGitHubRepos(gitHubRepos);
 
                         // get the data and see if we can display it in the adapter
