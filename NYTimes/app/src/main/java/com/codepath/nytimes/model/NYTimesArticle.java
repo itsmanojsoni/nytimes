@@ -18,10 +18,10 @@ public class NYTimesArticle {
     }
 
     public List<Multimedia> getMultimediaList() {
-        return multimediaList;
+        return multimedia;
     }
 
-    List<Multimedia> multimediaList;
+    List<Multimedia> multimedia;
 
     public String getSnippet() {
         return snippet;
