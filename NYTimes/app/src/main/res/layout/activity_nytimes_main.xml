@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.codepath.nytimes.NYTimesMainActivity">
+    tools:context="com.codepath.nytimes.activity.NYTimesMainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -22,33 +22,15 @@
             android:text="Toolbar Title"
             android:textColor="@android:color/white"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:layout_gravity="left"
-            />
+            android:layout_gravity="left" />
 
     </android.support.v7.widget.Toolbar>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvNYTimesArticleList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
 
-    <TextView
-        android:id="@+id/helloWorld"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:layout_centerInParent="true"/>
-
-    <TextView
-        android:id="@+id/nyTimesArticle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/helloWorld"
-        android:layout_alignRight="@+id/helloWorld"
-        android:text="@string/app_name"/>
-
-    <Button
-        android:id="@+id/btnClick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/nyTimesArticle"
-        android:layout_centerInParent="true"
-        android:text="Click"/>
 
 </RelativeLayout>
