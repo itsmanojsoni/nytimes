@@ -22,6 +22,8 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static android.R.attr.offset;
+
 public class NYTimesMainActivity extends AppCompatActivity {
 
     private static final int COLUMN = 2;
@@ -31,6 +33,9 @@ public class NYTimesMainActivity extends AppCompatActivity {
     private Context context;
     private NYTimesListAdapter nyTimesListAdapter;
     private Subscription subscription;
+    private EndlessRecyclerViewScrollListener scrollListener;
+
+    private String searchQuery = "Sports";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +78,23 @@ public class NYTimesMainActivity extends AppCompatActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvNYtimesArticleList.setLayoutManager(layoutManager);
 
-        String searchQuery = "Sports";
-        getArticleList(searchQuery);
+//        String searchQuery = "Sports";
+//        getArticleList(searchQuery, 1);
+        loadNextDataFromApi(searchQuery,1);
+
+        // Endless RecycleView Scroll Listener
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount,RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                loadNextDataFromApi(searchQuery,page);
+
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        rvNYtimesArticleList.addOnScrollListener(scrollListener);
+
 
     }
 
@@ -92,7 +112,14 @@ public class NYTimesMainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void getArticleList(String query) {
+    private void loadNextDataFromApi (String query, int offset) {
+
+        Log.d(TAG, "loadNextDataFrom API");
+        getArticleList(query,offset);
+
+    }
+
+    private void getArticleList(String query, int offset) {
 
         subscription = NYTimesRepository.getInstance()
                 .getArticles(query)
@@ -111,9 +138,11 @@ public class NYTimesMainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(SearchResult searchResult) {Log.d(TAG, "In onNext() and nyTimesRespons is : "+ searchResult);
+                    public void onNext(SearchResult searchResult) {
+                        Log.d(TAG, "In onNext() : " + searchResult);
                         nyTimesListAdapter.setData(searchResult.getNyTimesResponse().getNYTimesArticleList());
                         nyTimesListAdapter.notifyDataSetChanged();
+                        scrollListener.resetState();
                     }
                 });
     }

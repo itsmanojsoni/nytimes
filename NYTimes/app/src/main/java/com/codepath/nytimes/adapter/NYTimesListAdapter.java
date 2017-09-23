@@ -35,9 +35,8 @@ public class NYTimesListAdapter extends
         this.onItemClickListener = onItemClickListener;
     }
     public void setData(List<NYTimesArticle> nyTimesArticles) {
-//        nyTimesArticleList.clear();
-//        nyTimesArticleList.addAll(nyTimesArticles);
-        nyTimesArticleList = nyTimesArticles;
+        nyTimesArticleList.clear();
+        nyTimesArticleList.addAll(nyTimesArticles);
     }
 
 
