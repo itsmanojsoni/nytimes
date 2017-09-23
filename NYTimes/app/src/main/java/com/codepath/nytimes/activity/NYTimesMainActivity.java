@@ -122,6 +122,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
     private void loadNextDataFromApi (String query, int offset, RecyclerView view) {
 
         Log.d(TAG, "loadNextDataFrom API and offset is : "+offset);
+//        nyTimesArticleList.clear();
         getArticleList(query,offset,view);
 
     }

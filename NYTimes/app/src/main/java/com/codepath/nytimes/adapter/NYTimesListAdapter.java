@@ -105,7 +105,6 @@ public class NYTimesListAdapter extends
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "Item Size = "+nyTimesArticleList.size());
         return nyTimesArticleList.size();
     }
 
