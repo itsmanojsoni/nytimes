@@ -3,6 +3,7 @@ package com.codepath.nytimes.activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 
 import com.codepath.nytimes.R;
 import com.codepath.nytimes.adapter.NYTimesListAdapter;
+import com.codepath.nytimes.fragment.SearchFilter;
 import com.codepath.nytimes.model.NYTimesArticle;
 import com.codepath.nytimes.model.SearchResult;
 import com.codepath.nytimes.repository.NYTimesRepository;
@@ -152,8 +154,11 @@ public class NYTimesMainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
 
-//                Toast.makeText(context,"Menu Item Clicked",Toast.LENGTH_LONG).show();
+
                 Log.d(TAG, "Menu Item Clicked = "+menuItem.toString());
+
+                showSearchFilterDialog();
+
                 return false;
             }
         });
@@ -211,5 +216,13 @@ public class NYTimesMainActivity extends AppCompatActivity {
                         });
                     }
                 });
+    }
+
+    private void showSearchFilterDialog( ) {
+
+        FragmentManager fm = getSupportFragmentManager();
+        SearchFilter searchFilter = SearchFilter.newInstance("Some Title");
+        searchFilter.show(fm, "fragment_edit_name");
+
     }
 }
