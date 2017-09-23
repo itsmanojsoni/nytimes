@@ -33,6 +33,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import android.support.v7.widget.SearchView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 import static android.R.attr.offset;
@@ -111,14 +112,12 @@ public class NYTimesMainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-
-
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu_main, menu);
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 
+        MenuItem filterItem = menu.findItem(R.id.itemFilter);
+
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         // Customize searchview text and hint colors
         int searchEditId = android.support.v7.appcompat.R.id.search_src_text;
         EditText et = (EditText) searchView.findViewById(searchEditId);
@@ -147,7 +146,20 @@ public class NYTimesMainActivity extends AppCompatActivity {
             }
         });
 
-        return true;
+
+
+        filterItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+
+//                Toast.makeText(context,"Menu Item Clicked",Toast.LENGTH_LONG).show();
+                Log.d(TAG, "Menu Item Clicked = "+menuItem.toString());
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+//        return true;
     }
 
     private void loadNextDataFromApi (final  String query, final int offset, final RecyclerView view) {

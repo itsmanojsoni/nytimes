@@ -14,11 +14,22 @@
         <!--android:title="Profile">-->
     <!--</item>-->
 
+
     <item android:id="@+id/action_search"
         android:orderInCategory="5"
         android:title="Search"
         android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <item
+        android:id="@+id/itemFilter"
+        app:showAsAction="always|collapseActionView"
+        android:iconTint="@color/colorWhite"
+        android:icon="@mipmap/ic_filter"
+        android:title="Filter">
+    </item>
+
+
 
 </menu>
