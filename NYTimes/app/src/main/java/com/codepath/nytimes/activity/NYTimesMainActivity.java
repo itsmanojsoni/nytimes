@@ -222,7 +222,16 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         SearchFilter searchFilter = SearchFilter.newInstance("Some Title");
+        searchFilter.setSearchFilterDialogueListener(new SearchFilter.SearchFilterDialogueListener() {
+            @Override
+            public void onSaveSearchFilterDone(String inputText) {
+
+                Log.d(TAG, "Search Filer Call Back String = "+inputText);
+
+            }
+        });
         searchFilter.show(fm, "fragment_edit_name");
 
     }
+
 }

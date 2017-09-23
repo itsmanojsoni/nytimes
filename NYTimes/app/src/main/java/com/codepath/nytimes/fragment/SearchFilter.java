@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.codepath.nytimes.R;
@@ -17,6 +18,11 @@ import com.codepath.nytimes.R;
 
 public class SearchFilter extends DialogFragment{
 
+    public interface SearchFilterDialogueListener {
+        void onSaveSearchFilterDone(String inputText);
+    }
+
+    SearchFilterDialogueListener listener;
     public SearchFilter() {
 
     }
@@ -27,6 +33,10 @@ public class SearchFilter extends DialogFragment{
         args.putString("title", title);
         frag.setArguments(args);
         return frag;
+    }
+
+    public void setSearchFilterDialogueListener(SearchFilterDialogueListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -47,6 +57,24 @@ public class SearchFilter extends DialogFragment{
 //        mEditText.requestFocus();
 //        getDialog().getWindow().setSoftInputMode(
 //                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+
+        Button btnSave = view.findViewById(R.id.btnSave);
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                listener.onSaveSearchFilterDone("Test");
+                dismiss();
+            }
+        });
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
 
     }
