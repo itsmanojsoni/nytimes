@@ -13,7 +13,9 @@
         android:layout_height="wrap_content"
         app:titleTextColor="@android:color/white"
         android:background="?attr/colorPrimary"
-        android:theme="@style/AppTheme">
+        android:theme="@style/ToolbarTheme"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <!--<TextView-->
             <!--android:id="@+id/toolbar_title"-->
@@ -25,6 +27,7 @@
             <!--android:layout_gravity="left" />-->
 
     </android.support.v7.widget.Toolbar>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvNYTimesArticleList"
