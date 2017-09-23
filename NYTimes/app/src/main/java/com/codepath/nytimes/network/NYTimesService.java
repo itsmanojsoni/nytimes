@@ -13,5 +13,5 @@ import rx.Observable;
 public interface NYTimesService {
 
     @GET("/svc/search/v2/articlesearch.json")
-    Observable<SearchResult> getArticles(@Query("q") String query, @Query("api-key") String api_key);
+    Observable<SearchResult> getArticles(@Query("q") String query, @Query("page") int page, @Query("api-key") String api_key);
 }

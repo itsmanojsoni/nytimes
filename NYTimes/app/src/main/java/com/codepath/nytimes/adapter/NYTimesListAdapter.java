@@ -27,16 +27,18 @@ public class NYTimesListAdapter extends
     private static final String TAG = NYTimesListAdapter.class.getSimpleName();
 
     private Context context;
-    private List<NYTimesArticle> nyTimesArticleList = new ArrayList<>();
+    private List<NYTimesArticle> nyTimesArticleList;
     private OnItemClickListener onItemClickListener;
 
-    public NYTimesListAdapter(Context context, OnItemClickListener onItemClickListener) {
+    public NYTimesListAdapter(Context context, List<NYTimesArticle> nyTimesArticleList,OnItemClickListener onItemClickListener) {
         this.context = context;
+        this.nyTimesArticleList = nyTimesArticleList;
         this.onItemClickListener = onItemClickListener;
     }
     public void setData(List<NYTimesArticle> nyTimesArticles) {
-        nyTimesArticleList.clear();
-        nyTimesArticleList.addAll(nyTimesArticles);
+        Log.d(TAG, "In Set Data article Size : "+nyTimesArticles.size());
+//        nyTimesArticleList.clear();
+//        nyTimesArticleList.addAll(nyTimesArticles);
     }
 
 

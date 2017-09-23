@@ -42,8 +42,8 @@ public class NYTimesRepository {
         return instance;
     }
 
-    public Observable<SearchResult> getArticles(@NonNull String query) {
-        return nyTimesService.getArticles(query,API_KEY);
+    public Observable<SearchResult> getArticles(@NonNull String query, @NonNull int page) {
+        return nyTimesService.getArticles(query,page,API_KEY);
     }
 
 
