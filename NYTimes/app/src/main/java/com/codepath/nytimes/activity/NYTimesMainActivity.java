@@ -1,7 +1,9 @@
 package com.codepath.nytimes.activity;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.codepath.nytimes.R;
 import com.codepath.nytimes.adapter.NYTimesListAdapter;
@@ -27,15 +31,18 @@ import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import android.support.v7.widget.SearchView;
+import android.widget.EditText;
+
 
 import static android.R.attr.offset;
+import static android.net.sip.SipErrorCode.TIME_OUT;
 
 public class NYTimesMainActivity extends AppCompatActivity {
 
     private static final int COLUMN = 2;
     private static final String TAG = "NYTimesMainActivity";
-    @BindView(R.id.rvNYTimesArticleList)
-    RecyclerView rvNYtimesArticleList;
+    @BindView(R.id.rvNYTimesArticleList) RecyclerView rvNYtimesArticleList;
     private Context context;
     private NYTimesListAdapter nyTimesListAdapter;
     private Subscription subscription;
@@ -48,6 +55,8 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
     private String searchQuery = "Sports";
 
+    private int TIME_OUT = 2000; // TIME in MS
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,32 +65,16 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        Button button = (Button) findViewById(R.id.btnClick);
 
-//        context = (Context) this;
 
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                User user = new User("1","Soni", 967);
-//                Intent intent = new Intent(context,UserActivity.class);
-//                intent.putExtra("user", Parcels.wrap(user));
-//                startActivity(intent);
-//
-//            }
-//        });
-
-        final GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        final GridLayoutManager layoutManager = new GridLayoutManager(this, COLUMN);
         nyTimesListAdapter = new NYTimesListAdapter(this,nyTimesArticleList, new NYTimesListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-
                 Log.d(TAG, "article clicked at position");
-
             }
         });
 
@@ -91,7 +84,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
 //        String searchQuery = "Sports";
 //        getArticleList(searchQuery, 1);
-        loadNextDataFromApi(searchQuery,0,rvNYtimesArticleList);
+//        loadNextDataFromApi(searchQuery,0,rvNYtimesArticleList);
 
         // Endless RecycleView Scroll Listener
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
@@ -105,8 +98,6 @@ public class NYTimesMainActivity extends AppCompatActivity {
         };
         // Adds the scroll listener to RecyclerView
         rvNYtimesArticleList.addOnScrollListener(scrollListener);
-
-
     }
 
     @Override
@@ -119,7 +110,43 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+
+
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu_main, menu);
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        // Customize searchview text and hint colors
+        int searchEditId = android.support.v7.appcompat.R.id.search_src_text;
+        EditText et = (EditText) searchView.findViewById(searchEditId);
+        et.setTextColor(Color.WHITE);
+        et.setHintTextColor(Color.WHITE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // perform query here
+
+                // workaround to avoid issues with some emulators and keyboard devices firing twice if a keyboard enter is used
+                // see https://code.google.com/p/android/issues/detail?id=24599
+                searchView.clearFocus();
+                nyTimesArticleList.clear();
+                scrollListener.resetState();
+                nyTimesListAdapter.notifyDataSetChanged();
+                getArticleList(query,0,rvNYtimesArticleList);
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         return true;
     }
 
@@ -135,7 +162,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
             }
         };
 
-        handler.postDelayed(runnableCode, 1000);
+        handler.postDelayed(runnableCode,TIME_OUT);
     }
 
     private void getArticleList(String query, int offset, final RecyclerView view) {
