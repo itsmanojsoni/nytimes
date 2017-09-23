@@ -1,6 +1,7 @@
 package com.codepath.nytimes.activity;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,6 +19,7 @@ import com.codepath.nytimes.repository.NYTimesRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +43,8 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
     private List<NYTimesArticle> nyTimesArticleList = new ArrayList<>();
     private int curSize;
+
+    private  Handler handler = new Handler();
 
     private String searchQuery = "Sports";
 
@@ -119,15 +123,24 @@ public class NYTimesMainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void loadNextDataFromApi (String query, int offset, RecyclerView view) {
+    private void loadNextDataFromApi (final  String query, final int offset, final RecyclerView view) {
 
-        Log.d(TAG, "loadNextDataFrom API and offset is : "+offset);
-//        nyTimesArticleList.clear();
-        getArticleList(query,offset,view);
+        Log.d(TAG, "loadNextDataFromApi and offset is : "+offset);
+        // Define the code block to be executed
+        Runnable runnableCode = new Runnable() {
+            @Override
+            public void run() {
+                // Do something here on the main thread
+                getArticleList(query,offset,view);
+            }
+        };
 
+        handler.postDelayed(runnableCode, 1000);
     }
 
     private void getArticleList(String query, int offset, final RecyclerView view) {
+
+        Log.d(TAG, "getArticleList call");
 
         subscription = NYTimesRepository.getInstance()
                 .getArticles(query,offset)
