@@ -18,10 +18,10 @@ public interface NYTimesService {
     Observable<SearchResult> getArticles(@Query("q") String query, @Query("page") int page, @Query("api-key") String api_key);
 
     @GET("/svc/search/v2/articlesearch.json")
-    Observable<SearchResult>  getFilteredArticle(@Query("q") String query,
-                                                 @Query("begin_date") String begin_date,
-                                                 @Query("sort'") String sort,
-                                                 @Query("fq") String category,
-                                                 @Query("page") int page,
-                                                 @Query("api-key") String api_key);
+    Observable<SearchResult> getArticleList(@Query("q") String query,
+                                            @Query("begin_date") String begin_date,
+                                            @Query("sort'") String sort,
+                                            @Query("fq") String category,
+                                            @Query("page") int page,
+                                            @Query("api-key") String api_key);
 }

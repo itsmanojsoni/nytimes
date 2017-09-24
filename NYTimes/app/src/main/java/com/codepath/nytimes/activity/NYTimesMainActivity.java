@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.codepath.nytimes.R;
@@ -25,7 +24,6 @@ import com.codepath.nytimes.repository.NYTimesRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,11 +33,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import android.support.v7.widget.SearchView;
 import android.widget.EditText;
-import android.widget.Toast;
-
-
-import static android.R.attr.offset;
-import static android.net.sip.SipErrorCode.TIME_OUT;
 
 public class NYTimesMainActivity extends AppCompatActivity {
 
@@ -55,9 +48,6 @@ public class NYTimesMainActivity extends AppCompatActivity {
     private int curSize;
 
     private  Handler handler = new Handler();
-
-    private String searchQuery = "Sports";
-    private boolean  filteredSearch = true;
 
     private int TIME_OUT = 2000; // TIME in MS
 
@@ -96,7 +86,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount,RecyclerView view) {
-                loadNextDataFilteredSearch(page, view);
+                loadMoreDate(page, view);
             }
         };
         // Adds the scroll listener to RecyclerView
@@ -120,9 +110,8 @@ public class NYTimesMainActivity extends AppCompatActivity {
         MenuItem filterItem = menu.findItem(R.id.itemFilter);
 
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        // Customize searchview text and hint colors
         int searchEditId = android.support.v7.appcompat.R.id.search_src_text;
-        EditText et = (EditText) searchView.findViewById(searchEditId);
+        EditText et = searchView.findViewById(searchEditId);
         et.setTextColor(Color.WHITE);
         et.setHintTextColor(Color.WHITE);
 
@@ -130,17 +119,12 @@ public class NYTimesMainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // perform query here
-
-                // workaround to avoid issues with some emulators and keyboard devices firing twice if a keyboard enter is used
-                // see https://code.google.com/p/android/issues/detail?id=24599
                 searchView.clearFocus();
                 nyTimesArticleList.clear();
                 scrollListener.resetState();
                 nyTimesListAdapter.notifyDataSetChanged();
                 setQuertyText(query);
-//                getArticleList(query,0,rvNYtimesArticleList);
-                getFilteredArticleList(query,mDate,mSort,mCategory1,mCategory2,mCategory3,0,rvNYtimesArticleList);
-
+                getArticleList(query,mDate,mSort,mCategory1,mCategory2,mCategory3,0,rvNYtimesArticleList);
                 return true;
             }
 
@@ -156,16 +140,12 @@ public class NYTimesMainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
 
-                filteredSearch = true;
-
                 showSearchFilterDialog();
-
                 return false;
             }
         });
 
         return super.onCreateOptionsMenu(menu);
-//        return true;
     }
 
     private void setQuertyText(String query) {
@@ -173,33 +153,31 @@ public class NYTimesMainActivity extends AppCompatActivity {
     }
 
 
-    private void loadNextDataFilteredSearch (final int offset, final RecyclerView view) {
+    private void loadMoreDate(final int offset, final RecyclerView view) {
 
-//        Log.d(TAG, "loadNextDataFromApi and offset is : "+offset);
         // Define the code block to be executed
         Runnable runnableCode = new Runnable() {
             @Override
             public void run() {
                 // Do something here on the main thread
-                getFilteredArticleList(query,mDate,mSort,mCategory1,mCategory2,mCategory3,offset,view);
+                getArticleList(query,mDate,mSort,mCategory1,mCategory2,mCategory3,offset,view);
             }
         };
 
         handler.postDelayed(runnableCode,TIME_OUT);
 
-
     }
 
-    private void getFilteredArticleList(final  String query, final  String date, final String sort, final String param1, final String param2, final String param3, final int offset, final RecyclerView view) {
+    private void getArticleList(final  String query, final  String date, final String sort, final String param1, final String param2, final String param3, final int offset, final RecyclerView view) {
 
         String newDeskString = getNewDeskString(param1, param2, param3);
 
         Log.d(TAG, "Filtered Search Query =" +
-                " "+query+ " date = "+date+ " sort = "+sort+ " newDesk = "+newDeskString);
+                " "+query+ " date = "+date+ " sort = "+sort+ " newDesk = "+newDeskString+ " page = "+offset);
 
 
         subscription = NYTimesRepository.getInstance()
-                .getFilteredArticle(query,date,sort,newDeskString, offset)
+                .getArticleList(query,date,sort,newDeskString, offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<SearchResult>() {
@@ -243,7 +221,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
                 nyTimesListAdapter.notifyDataSetChanged();
 
                 saveSearchData(date,sort,param1,param2,param3);
-                getFilteredArticleList(query,date, sort, param1, param2, param3, 0,rvNYtimesArticleList);
+                getArticleList(query,date, sort, param1, param2, param3, 0,rvNYtimesArticleList);
 
             }
         });
@@ -252,11 +230,11 @@ public class NYTimesMainActivity extends AppCompatActivity {
     }
 
     private void saveSearchData(String date, String sort, String param1, String param2, String param3) {
-        mDate = date;
-        mSort = sort;
-        mCategory1 = param1;
-        mCategory2 = param2;
-        mCategory3 = param3;
+        this.mDate = date;
+        this.mSort = sort;
+        this.mCategory1 = param1;
+        this.mCategory2 = param2;
+        this.mCategory3 = param3;
     }
 
     private String getNewDeskString(String param1, String param2, String param3) {

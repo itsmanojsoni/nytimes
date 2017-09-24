@@ -1,8 +1,5 @@
 package com.codepath.nytimes.repository;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
 import com.codepath.nytimes.model.SearchResult;
 import com.codepath.nytimes.network.NYTimesService;
 import com.google.gson.FieldNamingPolicy;
@@ -13,8 +10,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by manoj on 9/22/17.
@@ -45,11 +40,7 @@ public class NYTimesRepository {
         return instance;
     }
 
-    public Observable<SearchResult> getArticles(@NonNull String query, @NonNull int page) {
-        return nyTimesService.getArticles(query,page,API_KEY);
-    }
-
-    public Observable<SearchResult> getFilteredArticle(String query,String date,String sort, String newDeskString, int page) {
-        return nyTimesService.getFilteredArticle(query,date,sort,newDeskString,page,API_KEY);
+    public Observable<SearchResult> getArticleList(String query, String date, String sort, String newDeskString, int page) {
+        return nyTimesService.getArticleList(query,date,sort,newDeskString,page,API_KEY);
     }
 }
