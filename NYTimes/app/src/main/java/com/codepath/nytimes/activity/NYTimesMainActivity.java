@@ -88,14 +88,13 @@ public class NYTimesMainActivity extends AppCompatActivity {
         rvNYtimesArticleList.setLayoutManager(layoutManager);
         rvNYtimesArticleList.setHasFixedSize(true);
 
-        // Endless RecycleView Scroll Listener
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount,RecyclerView view) {
                 loadMoreData(page, view);
             }
         };
-        // Adds the scroll listener to RecyclerView
+
         rvNYtimesArticleList.addOnScrollListener(scrollListener);
     }
 
