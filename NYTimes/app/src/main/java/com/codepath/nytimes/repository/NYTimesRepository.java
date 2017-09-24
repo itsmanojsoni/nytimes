@@ -1,6 +1,6 @@
 package com.codepath.nytimes.repository;
 
-import com.codepath.nytimes.model.SearchResult;
+import com.codepath.nytimes.model.NYTimesSearchResult;
 import com.codepath.nytimes.network.NYTimesService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -17,7 +17,7 @@ import rx.Observable;
 
 public class NYTimesRepository {
 
-    private static final String GITHUB_BASE_URL = "http://api.nytimes.com/";
+    private static final String NYTIMES_BASE_URL = "http://api.nytimes.com/";
     private static final String API_KEY = "96fc048ae36d495cba184a6d94440a0f";
 
     private static NYTimesRepository instance;
@@ -26,7 +26,7 @@ public class NYTimesRepository {
     private NYTimesRepository() {
         final Gson gson =
                 new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
-        final Retrofit retrofit = new Retrofit.Builder().baseUrl(GITHUB_BASE_URL)
+        final Retrofit retrofit = new Retrofit.Builder().baseUrl(NYTIMES_BASE_URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
@@ -40,7 +40,7 @@ public class NYTimesRepository {
         return instance;
     }
 
-    public Observable<SearchResult> getArticleList(String query, String date, String sort, String newDeskString, int page) {
+    public Observable<NYTimesSearchResult> getArticleList(String query, String date, String sort, String newDeskString, int page) {
         return nyTimesService.getArticleList(query,date,sort,newDeskString,page,API_KEY);
     }
 }

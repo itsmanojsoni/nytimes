@@ -14,6 +14,7 @@ import com.codepath.nytimes.R;
 import com.codepath.nytimes.model.Multimedia;
 import com.codepath.nytimes.model.NYTimesArticle;
 import com.codepath.nytimes.util.DynamicHeightImageView;
+import com.codepath.nytimes.util.GenerateThumbnailUrl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +37,6 @@ public class NYTimesListAdapter extends
         this.context = context;
         this.nyTimesArticleList = nyTimesArticleList;
         this.onItemClickListener = onItemClickListener;
-    }
-    public void setData(List<NYTimesArticle> nyTimesArticles) {
-        Log.d(TAG, "In Set Data article Size : "+nyTimesArticles.size());
-//        nyTimesArticleList.clear();
-//        nyTimesArticleList.addAll(nyTimesArticles);
     }
 
 
@@ -90,7 +86,6 @@ public class NYTimesListAdapter extends
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.d(TAG, "OnBind View Holder and position is : "+position);
         NYTimesArticle nyTimesArticle = nyTimesArticleList.get(position);
 
         String headline = nyTimesArticle.getHeadlines();
@@ -104,10 +99,8 @@ public class NYTimesListAdapter extends
         }
 
         if (nyTimesArticle.getMultimediaList() != null && (nyTimesArticle.getMultimediaList().size() > 0)) {
-            Log.d(TAG, "What is the Size = "+nyTimesArticle.getMultimediaList().size());
             Multimedia photo = nyTimesArticle.getMultimediaList().get(0);
-            String thumbnailUrl = "http://www.nytimes.com/" + photo.getUrl();
-
+            String thumbnailUrl = GenerateThumbnailUrl.getThumbnail(photo.getUrl());
             holder.ivStoryThumbnail.setHeightRatio(((double)photo.getHeight())/photo.getWidth());
             Glide.with(context).load(thumbnailUrl).dontAnimate().into(holder.ivStoryThumbnail);
         }

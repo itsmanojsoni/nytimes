@@ -23,6 +23,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
 
     private WebView myWebView;
     private String webUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,24 +32,19 @@ public class ArticleDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detailActivityToolbar);
         setSupportActionBar(toolbar);
 
-//        webUrl = getIntent().getStringExtra("webUrl");
-
-        NYTimesArticle nyTimesArticle = (NYTimesArticle) Parcels.unwrap(getIntent().getParcelableExtra("article"));
+        NYTimesArticle nyTimesArticle = Parcels.unwrap(getIntent().getParcelableExtra("article"));
 
         webUrl = nyTimesArticle.getWeb_url();
-        Log.d("ArticleDetailActivity", "Web Url is : "+webUrl);
+
         myWebView = (WebView) findViewById(R.id.webview);
-        // Configure related browser settings
+
         myWebView.getSettings().setLoadsImagesAutomatically(true);
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        // Configure the client to use when opening URLs
         myWebView.setWebViewClient(new MyBrowser());
-        // Load the initial URL
         myWebView.loadUrl(webUrl);
     }
 
-    // Manages the behavior when URLs are loaded
     private class MyBrowser extends WebViewClient {
         @SuppressWarnings("deprecation")
         @Override
@@ -91,11 +87,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
                 break;
 
         }
-
         return super.onOptionsItemSelected(item);
-
     }
-
-
 
 }

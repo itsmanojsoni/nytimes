@@ -21,7 +21,7 @@ import com.codepath.nytimes.R;
 import com.codepath.nytimes.adapter.NYTimesListAdapter;
 import com.codepath.nytimes.fragment.SearchFilter;
 import com.codepath.nytimes.model.NYTimesArticle;
-import com.codepath.nytimes.model.SearchResult;
+import com.codepath.nytimes.model.NYTimesSearchResult;
 import com.codepath.nytimes.repository.NYTimesRepository;
 
 import java.util.ArrayList;
@@ -40,15 +40,11 @@ import android.widget.Toast;
 
 import org.parceler.Parcels;
 
-import static android.R.attr.data;
-import static android.media.CamcorderProfile.get;
-
 public class NYTimesMainActivity extends AppCompatActivity {
 
     private static final int COLUMN = 2;
     private static final String TAG = "NYTimesMainActivity";
     @BindView(R.id.rvNYTimesArticleList) RecyclerView rvNYtimesArticleList;
-    private Context context;
     private NYTimesListAdapter nyTimesListAdapter;
     private Subscription subscription;
     private EndlessRecyclerViewScrollListener scrollListener;
@@ -74,11 +70,6 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-//        context = (Context) this;
 
 
         final GridLayoutManager layoutManager = new GridLayoutManager(this, COLUMN);
@@ -95,6 +86,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
         rvNYtimesArticleList.setAdapter(nyTimesListAdapter);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvNYtimesArticleList.setLayoutManager(layoutManager);
+        rvNYtimesArticleList.setHasFixedSize(true);
 
         // Endless RecycleView Scroll Listener
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
@@ -149,7 +141,6 @@ public class NYTimesMainActivity extends AppCompatActivity {
         });
 
 
-
         filterItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -194,7 +185,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
                 .getArticleList(query,date,sort,newDeskString, offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<SearchResult>() {
+                .subscribe(new Observer<NYTimesSearchResult>() {
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "In onCompleted()");
@@ -208,8 +199,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(SearchResult searchResult) {
-                        Log.d(TAG, "In Filtered onNext() : " + searchResult);
+                    public void onNext(NYTimesSearchResult searchResult) {
                         List<NYTimesArticle> nyTimesArticles = searchResult.getNyTimesResponse().getNYTimesArticleList();
                         nyTimesArticleList.addAll(nyTimesArticles);
                         curSize = nyTimesListAdapter.getItemCount();

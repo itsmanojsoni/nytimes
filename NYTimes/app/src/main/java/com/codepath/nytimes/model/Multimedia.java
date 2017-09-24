@@ -9,6 +9,11 @@ import org.parceler.Parcel;
 @Parcel
 public class Multimedia {
 
+    String type;
+    String subtype;
+    int width;
+    int height;
+    String url;
 
     public String getType() {
         return type;
@@ -53,11 +58,5 @@ public class Multimedia {
     Multimedia() {
 
     }
-
-    String type;
-    String subtype;
-    int width;
-    int height;
-    String url;
 
 }
