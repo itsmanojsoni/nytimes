@@ -250,10 +250,10 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
         Log.d(TAG, "getFilteredArticleList date : "+date+ " sort = "+sort+ " offset = "+offset);
 
-        Log.d(TAG, "getFilteredArticleList Param 1 = "+param1+ " Param2 = "+param2+ " Param3 = "+param3);
+        String newDeskString = getNewDeskString(param1, param2, param3);
 
         subscription = NYTimesRepository.getInstance()
-                .getFilteredArticle(date,sort, param1, param2, param3, offset)
+                .getFilteredArticle(date,sort,newDeskString, offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<SearchResult>() {
@@ -313,6 +313,33 @@ public class NYTimesMainActivity extends AppCompatActivity {
         mCategory1 = param1;
         mCategory2 = param2;
         mCategory3 = param3;
+    }
+
+    private String getNewDeskString(String param1, String param2, String param3) {
+
+        StringBuilder newDeskString = new StringBuilder();
+
+        newDeskString.append("news_desk:(");
+
+        if (param1!= null && !param1.isEmpty()) {
+            newDeskString.append(param1);
+            newDeskString.append(" ");
+        }
+
+        if (param2!= null && !param2.isEmpty()) {
+            newDeskString.append(param2);
+            newDeskString.append(" ");
+        }
+
+        if (param3!= null && !param3.isEmpty()) {
+            newDeskString.append(param3);
+            newDeskString.append(" ");
+        }
+        newDeskString.append(")");
+
+        Log.d(TAG, "newDeskString = "+newDeskString.toString());
+
+        return newDeskString.toString();
     }
 
 }

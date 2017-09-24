@@ -49,14 +49,7 @@ public class NYTimesRepository {
         return nyTimesService.getArticles(query,page,API_KEY);
     }
 
-    public Observable<SearchResult> getFilteredArticle(String date,String sort, String param1, String param2, String param3, int page) {
-
-        String newdata = "news_desk:("+param1 + " " + param2 + " " + param3 + ")";
-
-        Log.d(TAG, "New Data is : "+newdata);
-
-        return nyTimesService.getFilteredArticle(date,sort,newdata,page,API_KEY);
+    public Observable<SearchResult> getFilteredArticle(String date,String sort, String newDeskString, int page) {
+        return nyTimesService.getFilteredArticle(date,sort,newDeskString,page,API_KEY);
     }
-
-
 }
