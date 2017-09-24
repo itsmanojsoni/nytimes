@@ -15,6 +15,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.codepath.nytimes.R;
+import com.codepath.nytimes.model.NYTimesArticle;
+
+import org.parceler.Parcels;
 
 public class ArticleDetailActivity extends AppCompatActivity {
 
@@ -28,8 +31,11 @@ public class ArticleDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detailActivityToolbar);
         setSupportActionBar(toolbar);
 
-        webUrl = getIntent().getStringExtra("webUrl");
+//        webUrl = getIntent().getStringExtra("webUrl");
 
+        NYTimesArticle nyTimesArticle = (NYTimesArticle) Parcels.unwrap(getIntent().getParcelableExtra("article"));
+
+        webUrl = nyTimesArticle.getWeb_url();
         Log.d("ArticleDetailActivity", "Web Url is : "+webUrl);
         myWebView = (WebView) findViewById(R.id.webview);
         // Configure related browser settings
@@ -77,7 +83,6 @@ public class ArticleDetailActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.action_share:
-
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_TEXT, webUrl);

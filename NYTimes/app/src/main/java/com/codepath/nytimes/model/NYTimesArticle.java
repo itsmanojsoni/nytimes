@@ -1,17 +1,24 @@
 package com.codepath.nytimes.model;
 
+import org.parceler.Parcel;
+
 import java.util.List;
 
 /**
  * Created by manoj on 9/21/17.
  */
-
+@Parcel
 public class NYTimesArticle {
     String snippet;
     String source;
     String pub_date;
     String new_desk;
     String web_url;
+    List<Multimedia> multimedia;
+
+    NYTimesArticle () {
+
+    }
 
     public String getHeadlines() {
         return headline.getMain();
@@ -32,7 +39,6 @@ public class NYTimesArticle {
         return multimedia;
     }
 
-    List<Multimedia> multimedia;
 
     public String getSnippet() {
         return snippet;
@@ -50,9 +56,14 @@ public class NYTimesArticle {
         return new_desk;
     }
 
-    private class Headline {
+    @Parcel
+    static class Headline {
         String main;
         String print_headline;
+
+        Headline() {
+
+        }
 
         public String getMain() {
             return main;

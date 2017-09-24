@@ -1,10 +1,14 @@
 package com.codepath.nytimes.model;
 
+import org.parceler.Parcel;
+
 /**
  * Created by manoj on 9/22/17.
  */
 
+@Parcel
 public class Multimedia {
+
 
     public String getType() {
         return type;
@@ -44,6 +48,10 @@ public class Multimedia {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    Multimedia() {
+
     }
 
     String type;

@@ -38,6 +38,8 @@ import android.support.v7.widget.SearchView;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.parceler.Parcels;
+
 import static android.R.attr.data;
 import static android.media.CamcorderProfile.get;
 
@@ -76,20 +78,17 @@ public class NYTimesMainActivity extends AppCompatActivity {
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        context = (Context) this;
+//        context = (Context) this;
 
 
         final GridLayoutManager layoutManager = new GridLayoutManager(this, COLUMN);
         nyTimesListAdapter = new NYTimesListAdapter(this,nyTimesArticleList, new NYTimesListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Log.d(TAG, "article clicked at position");
-                Intent inte = new Intent(getApplicationContext(), ArticleDetailActivity.class);
-                // put "extras" into the bundle for access in the second activity
-                String webUrl = nyTimesArticleList.get(position).getWeb_url();
-                inte.putExtra("webUrl", webUrl);
-                // brings up the second activity
-                startActivity(inte);
+                Intent intent = new Intent(getApplicationContext(), ArticleDetailActivity.class);
+                NYTimesArticle nyTimesArticle = nyTimesArticleList.get(position);
+                intent.putExtra("article", Parcels.wrap(nyTimesArticle));
+                startActivity(intent);
             }
         });
 

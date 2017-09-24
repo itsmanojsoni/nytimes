@@ -28,7 +28,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // RecycleView
-
     compile 'com.android.support:recyclerview-v7:26.+'
     //Butter Knife
     compile 'com.jakewharton:butterknife:8.4.0'
