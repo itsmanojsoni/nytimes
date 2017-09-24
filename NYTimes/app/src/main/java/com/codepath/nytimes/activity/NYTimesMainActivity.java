@@ -35,7 +35,9 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import android.support.v7.widget.SearchView;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.parceler.Parcels;
@@ -62,6 +64,8 @@ public class NYTimesMainActivity extends AppCompatActivity {
     private String query;
     private SearchView searchView;
 
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +75,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         final GridLayoutManager layoutManager = new GridLayoutManager(this, COLUMN);
         nyTimesListAdapter = new NYTimesListAdapter(this,nyTimesArticleList, new NYTimesListAdapter.OnItemClickListener() {
@@ -159,6 +164,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
     private void loadMoreData(final int offset, final RecyclerView view) {
 
+        progressBar.setVisibility(View.VISIBLE);
         // Define the code block to be executed
         Runnable runnableCode = new Runnable() {
             @Override
@@ -199,6 +205,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(NYTimesSearchResult searchResult) {
+                        progressBar.setVisibility(View.GONE);
                         List<NYTimesArticle> nyTimesArticles = searchResult.getNyTimesResponse().getNYTimesArticleList();
                         nyTimesArticleList.addAll(nyTimesArticles);
                         curSize = nyTimesListAdapter.getItemCount();
