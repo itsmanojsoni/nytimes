@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.codepath.nytimes.R;
 
@@ -102,6 +104,16 @@ public class SearchFilter extends DialogFragment{
         setupCheckboxes(view);
 
 
+        // Spinner Item
+
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinnerSort);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.sort_array, R.layout.spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
 
 
     }
