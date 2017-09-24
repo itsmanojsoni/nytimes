@@ -182,6 +182,24 @@ public class NYTimesMainActivity extends AppCompatActivity {
         handler.postDelayed(runnableCode,TIME_OUT);
     }
 
+
+    private void loadNextDataFilteredSearch (final  String date, final String sort, final String param1, final String param2, final String param3, final int offset, final RecyclerView view) {
+
+        Log.d(TAG, "loadNextDataFromApi and offset is : "+offset);
+        // Define the code block to be executed
+        Runnable runnableCode = new Runnable() {
+            @Override
+            public void run() {
+                // Do something here on the main thread
+                getFilteredArticleList(date,sort,param1,param2,param3,offset,view);
+            }
+        };
+
+        handler.postDelayed(runnableCode,TIME_OUT);
+
+
+    }
+
     private void getArticleList(String query, int offset, final RecyclerView view) {
 
         Log.d(TAG, "getArticleList call");
@@ -218,6 +236,43 @@ public class NYTimesMainActivity extends AppCompatActivity {
                 });
     }
 
+
+    private void getFilteredArticleList(final  String date, final String sort, final String param1, final String param2, final String param3, final int offset, final RecyclerView view) {
+
+        Log.d(TAG, "getFilteredArticleList date : "+date+ " sort = "+sort+ " offset = "+offset);
+
+        subscription = NYTimesRepository.getInstance()
+                .getFilteredArticle(date,sort, param1, param2, param3, offset)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<SearchResult>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "In onCompleted()");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "In onError()");
+                    }
+
+                    @Override
+                    public void onNext(SearchResult searchResult) {
+                        Log.d(TAG, "In Filtered onNext() : " + searchResult);
+                        List<NYTimesArticle> nyTimesArticles = searchResult.getNyTimesResponse().getNYTimesArticleList();
+                        nyTimesArticleList.addAll(nyTimesArticles);
+                        curSize = nyTimesListAdapter.getItemCount();
+                        view.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                nyTimesListAdapter.notifyItemRangeInserted(curSize, nyTimesArticleList.size() - 1);
+                            }
+                        });
+                    }
+                });
+    }
+
     private void showSearchFilterDialog( ) {
 
         FragmentManager fm = getSupportFragmentManager();
@@ -230,6 +285,9 @@ public class NYTimesMainActivity extends AppCompatActivity {
                 Log.d(TAG, "Search Filer Call Back Sort Value = "+sort);
 
                 Log.d(TAG, "Date is = "+date);
+
+                loadNextDataFilteredSearch(date, sort, param1, param2, param3, 0,rvNYtimesArticleList);
+
             }
         });
         searchFilter.show(fm, "fragment_edit_name");
