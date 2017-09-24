@@ -1,10 +1,14 @@
 package com.codepath.nytimes.activity;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -15,12 +19,16 @@ import com.codepath.nytimes.R;
 public class ArticleDetailActivity extends AppCompatActivity {
 
     private WebView myWebView;
+    private String webUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_detail);
 
-        String webUrl = getIntent().getStringExtra("webUrl");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.detailActivityToolbar);
+        setSupportActionBar(toolbar);
+
+        webUrl = getIntent().getStringExtra("webUrl");
 
         Log.d("ArticleDetailActivity", "Web Url is : "+webUrl);
         myWebView = (WebView) findViewById(R.id.webview);
@@ -50,5 +58,39 @@ public class ArticleDetailActivity extends AppCompatActivity {
             return true;
         }
     }
+
+
+    @Override
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.action_share:
+
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, webUrl);
+                startActivity(Intent.createChooser(shareIntent, "Share link using"));
+
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+
+    }
+
+
 
 }
