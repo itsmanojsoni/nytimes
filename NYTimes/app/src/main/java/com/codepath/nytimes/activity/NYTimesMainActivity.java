@@ -57,8 +57,13 @@ public class NYTimesMainActivity extends AppCompatActivity {
     private  Handler handler = new Handler();
 
     private String searchQuery = "Sports";
+    private boolean  filteredSearch = false;
 
     private int TIME_OUT = 2000; // TIME in MS
+
+    private String mDate;
+    private String mSort;
+    private String mCategory1, mCategory2,mCategory3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,17 +90,20 @@ public class NYTimesMainActivity extends AppCompatActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvNYtimesArticleList.setLayoutManager(layoutManager);
 
-//        String searchQuery = "Sports";
-//        getArticleList(searchQuery, 1);
-//        loadNextDataFromApi(searchQuery,0,rvNYtimesArticleList);
-
         // Endless RecycleView Scroll Listener
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount,RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                loadNextDataFromApi(searchQuery,page, view);
+
+                if (!filteredSearch) {
+                    loadNextDataFromApi(searchQuery, page, view);
+                } else {
+
+                    loadNextDataFilteredSearch(page, view);
+
+                }
 
             }
         };
@@ -156,6 +164,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
 
                 Log.d(TAG, "Menu Item Clicked = "+menuItem.toString());
+                filteredSearch = true;
 
                 showSearchFilterDialog();
 
@@ -183,7 +192,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
     }
 
 
-    private void loadNextDataFilteredSearch (final  String date, final String sort, final String param1, final String param2, final String param3, final int offset, final RecyclerView view) {
+    private void loadNextDataFilteredSearch (final int offset, final RecyclerView view) {
 
         Log.d(TAG, "loadNextDataFromApi and offset is : "+offset);
         // Define the code block to be executed
@@ -191,7 +200,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Do something here on the main thread
-                getFilteredArticleList(date,sort,param1,param2,param3,offset,view);
+                getFilteredArticleList(mDate,mSort,mCategory1,mCategory2,mCategory3,offset,view);
             }
         };
 
@@ -286,12 +295,21 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
                 Log.d(TAG, "Date is = "+date);
 
-                loadNextDataFilteredSearch(date, sort, param1, param2, param3, 0,rvNYtimesArticleList);
+                saveSearchData(date,sort,param1,param2,param3);
+                getFilteredArticleList(date, sort, param1, param2, param3, 0,rvNYtimesArticleList);
 
             }
         });
         searchFilter.show(fm, "fragment_edit_name");
 
+    }
+
+    private void saveSearchData(String date, String sort, String param1, String param2, String param3) {
+        mDate = date;
+        mSort = sort;
+        mCategory1 = param1;
+        mCategory2 = param2;
+        mCategory2 = param3;
     }
 
 }
