@@ -49,12 +49,15 @@ public class NYTimesListAdapter extends
 
         DynamicHeightImageView ivStoryThumbnail;
         TextView    tvTitle;
+        TextView    tvCategory;
+        TextView    tvDate;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             ivStoryThumbnail = itemView.findViewById(R.id.ivStoryThumbnail);
             tvTitle =   itemView.findViewById(R.id.tvStoryTitle);
+            tvCategory = itemView.findViewById(R.id.tvCategory);
         }
 
         public void bind(final NYTimesArticle model,
@@ -93,6 +96,12 @@ public class NYTimesListAdapter extends
         String headline = nyTimesArticle.getHeadlines();
         holder.tvTitle.setText(headline);
 
+        String new_desk = nyTimesArticle.getNew_desk();
+
+        if (new_desk != null && !new_desk.isEmpty()) {
+
+            holder.tvCategory.setText(new_desk);
+        }
 
         if (nyTimesArticle.getMultimediaList() != null && (nyTimesArticle.getMultimediaList().size() > 0)) {
             Log.d(TAG, "What is the Size = "+nyTimesArticle.getMultimediaList().size());
