@@ -10,7 +10,7 @@ The following **required** functionality is completed:
 * [X] User can click on filter icon on top right in the tool bar which allows selection of advanced search options to filter results
 * [X] User can configure advanced search filters such as:
   * [X] Begin Date (using a date picker)
-  * [X ] News desk values (Arts, Fashion & Style, Sports)
+  * [X] News desk values (Arts, Fashion & Style, Sports)
   * [X] Sort order (oldest or newest)
 * [X] Subsequent searches have any filters applied to the search results
 * [X] User can tap on any article in results to view the contents in an embedded browser.
@@ -63,10 +63,10 @@ Describe any challenges encountered while building the app.
 
 - [Retrofit](http://square.github.io/retrofit/)  - An HTTP Client for Android
 - [Glide](https://github.com/bumptech/glide) - Image loading and caching library for Android
-- [parceler] (https://guides.codepath.com/android/Using-Parceler) - 
-- [RxJava] (https://github.com/ReactiveX/RxJava ) 
-- [GSON] (https://github.com/google/gson) - JSON Serializer/Deserializer 
-- [Butterknife] (http://jakewharton.github.io/butterknife/) - View boilterplate code 
+- [Parceler](https://guides.codepath.com/android/Using-Parceler) - 
+- [RxJava](https://github.com/ReactiveX/RxJava ) 
+- [GSON](https://github.com/google/gson) - JSON Serializer/Deserializer 
+- [Butterknife](http://jakewharton.github.io/butterknife/) - View boilterplate code 
 
 ## License
 
