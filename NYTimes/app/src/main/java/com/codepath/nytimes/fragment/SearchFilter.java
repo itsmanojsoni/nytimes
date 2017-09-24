@@ -149,25 +149,10 @@ public class SearchFilter extends DialogFragment implements DatePickerFragment.D
         dateSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                InputMethodManager imm = (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                if (imm != null) {
-//                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-//                }
-
                 showDatePickerDialog(view);
             }
         });
 
-//        dateSelect.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                InputMethodManager imm = (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                if (imm != null) {
-//                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-//                }
-//                return false;
-//            }
-//        });
     }
 
 
