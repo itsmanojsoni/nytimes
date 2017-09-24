@@ -63,10 +63,10 @@ Describe any challenges encountered while building the app.
 
 - [Retrofit](http://square.github.io/retrofit/)  - An HTTP Client for Android
 - [Glide](https://github.com/bumptech/glide) - Image loading and caching library for Android
-- [Parceler](https://guides.codepath.com/android/Using-Parceler) - 
-- [RxJava](https://github.com/ReactiveX/RxJava ) 
+- [Parceler](https://guides.codepath.com/android/Using-Parceler) - Library to create Parcelable Objects
+- [RxJava](https://github.com/ReactiveX/RxJava ) - Reactive Programming 
 - [GSON](https://github.com/google/gson) - JSON Serializer/Deserializer 
-- [Butterknife](http://jakewharton.github.io/butterknife/) - View boilterplate code 
+- [Butterknife](http://jakewharton.github.io/butterknife/) - Boilerplate code for view 
 
 ## License
 
