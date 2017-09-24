@@ -48,7 +48,7 @@ public class NYTimesRepository {
 
     public Observable<SearchResult> getFilteredArticle(String date,String sort, String param1, String param2, String param3, int page) {
 
-        return nyTimesService.getFilteredArticle(date,sort,page,API_KEY);
+        return nyTimesService.getFilteredArticle(date,sort,"news_desk:(\"Food\" \"Business\")",page,API_KEY);
     }
 
 

@@ -270,6 +270,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
                     public void onNext(SearchResult searchResult) {
                         Log.d(TAG, "In Filtered onNext() : " + searchResult);
                         List<NYTimesArticle> nyTimesArticles = searchResult.getNyTimesResponse().getNYTimesArticleList();
+                        Log.d(TAG, "The Web URL is : "+nyTimesArticles.get(0).getWeb_url());
                         nyTimesArticleList.addAll(nyTimesArticles);
                         curSize = nyTimesListAdapter.getItemCount();
                         view.post(new Runnable() {
