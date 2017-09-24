@@ -57,13 +57,15 @@ public class NYTimesMainActivity extends AppCompatActivity {
     private  Handler handler = new Handler();
 
     private String searchQuery = "Sports";
-    private boolean  filteredSearch = false;
+    private boolean  filteredSearch = true;
 
     private int TIME_OUT = 2000; // TIME in MS
 
     private String mDate;
     private String mSort;
     private String mCategory1, mCategory2,mCategory3;
+    private String query;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,17 +96,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount,RecyclerView view) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
-
-                if (!filteredSearch) {
-                    loadNextDataFromApi(searchQuery, page, view);
-                } else {
-
-                    loadNextDataFilteredSearch(page, view);
-
-                }
-
+                loadNextDataFilteredSearch(page, view);
             }
         };
         // Adds the scroll listener to RecyclerView
@@ -127,7 +119,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
         MenuItem filterItem = menu.findItem(R.id.itemFilter);
 
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         // Customize searchview text and hint colors
         int searchEditId = android.support.v7.appcompat.R.id.search_src_text;
         EditText et = (EditText) searchView.findViewById(searchEditId);
@@ -145,7 +137,9 @@ public class NYTimesMainActivity extends AppCompatActivity {
                 nyTimesArticleList.clear();
                 scrollListener.resetState();
                 nyTimesListAdapter.notifyDataSetChanged();
-                getArticleList(query,0,rvNYtimesArticleList);
+                setQuertyText(query);
+//                getArticleList(query,0,rvNYtimesArticleList);
+                getFilteredArticleList(query,mDate,mSort,mCategory1,mCategory2,mCategory3,0,rvNYtimesArticleList);
 
                 return true;
             }
@@ -162,8 +156,6 @@ public class NYTimesMainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
 
-
-                Log.d(TAG, "Menu Item Clicked = "+menuItem.toString());
                 filteredSearch = true;
 
                 showSearchFilterDialog();
@@ -176,31 +168,20 @@ public class NYTimesMainActivity extends AppCompatActivity {
 //        return true;
     }
 
-    private void loadNextDataFromApi (final  String query, final int offset, final RecyclerView view) {
-
-        Log.d(TAG, "loadNextDataFromApi and offset is : "+offset);
-        // Define the code block to be executed
-        Runnable runnableCode = new Runnable() {
-            @Override
-            public void run() {
-                // Do something here on the main thread
-                getArticleList(query,offset,view);
-            }
-        };
-
-        handler.postDelayed(runnableCode,TIME_OUT);
+    private void setQuertyText(String query) {
+        this.query = query;
     }
 
 
     private void loadNextDataFilteredSearch (final int offset, final RecyclerView view) {
 
-        Log.d(TAG, "loadNextDataFromApi and offset is : "+offset);
+//        Log.d(TAG, "loadNextDataFromApi and offset is : "+offset);
         // Define the code block to be executed
         Runnable runnableCode = new Runnable() {
             @Override
             public void run() {
                 // Do something here on the main thread
-                getFilteredArticleList(mDate,mSort,mCategory1,mCategory2,mCategory3,offset,view);
+                getFilteredArticleList(query,mDate,mSort,mCategory1,mCategory2,mCategory3,offset,view);
             }
         };
 
@@ -209,51 +190,16 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
     }
 
-    private void getArticleList(String query, int offset, final RecyclerView view) {
-
-        Log.d(TAG, "getArticleList call");
-
-        subscription = NYTimesRepository.getInstance()
-                .getArticles(query,offset)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<SearchResult>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.d(TAG, "In onCompleted()");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        Log.d(TAG, "In onError()");
-                    }
-
-                    @Override
-                    public void onNext(SearchResult searchResult) {
-                        Log.d(TAG, "In onNext() : " + searchResult);
-                        List<NYTimesArticle> nyTimesArticles = searchResult.getNyTimesResponse().getNYTimesArticleList();
-                        nyTimesArticleList.addAll(nyTimesArticles);
-                        curSize = nyTimesListAdapter.getItemCount();
-                        view.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                nyTimesListAdapter.notifyItemRangeInserted(curSize, nyTimesArticleList.size() - 1);
-                            }
-                        });
-                    }
-                });
-    }
-
-
-    private void getFilteredArticleList(final  String date, final String sort, final String param1, final String param2, final String param3, final int offset, final RecyclerView view) {
-
-        Log.d(TAG, "getFilteredArticleList date : "+date+ " sort = "+sort+ " offset = "+offset);
+    private void getFilteredArticleList(final  String query, final  String date, final String sort, final String param1, final String param2, final String param3, final int offset, final RecyclerView view) {
 
         String newDeskString = getNewDeskString(param1, param2, param3);
 
+        Log.d(TAG, "Filtered Search Query =" +
+                " "+query+ " date = "+date+ " sort = "+sort+ " newDesk = "+newDeskString);
+
+
         subscription = NYTimesRepository.getInstance()
-                .getFilteredArticle(date,sort,newDeskString, offset)
+                .getFilteredArticle(query,date,sort,newDeskString, offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<SearchResult>() {
@@ -272,7 +218,6 @@ public class NYTimesMainActivity extends AppCompatActivity {
                     public void onNext(SearchResult searchResult) {
                         Log.d(TAG, "In Filtered onNext() : " + searchResult);
                         List<NYTimesArticle> nyTimesArticles = searchResult.getNyTimesResponse().getNYTimesArticleList();
-                        Log.d(TAG, "The Web URL is : "+nyTimesArticles.get(0).getWeb_url());
                         nyTimesArticleList.addAll(nyTimesArticles);
                         curSize = nyTimesListAdapter.getItemCount();
                         view.post(new Runnable() {
@@ -292,14 +237,13 @@ public class NYTimesMainActivity extends AppCompatActivity {
         searchFilter.setSearchFilterDialogueListener(new SearchFilter.SearchFilterDialogueListener() {
             @Override
             public void onSaveSearchFilterDone(String date, String sort, String param1, String param2, String param3) {
-                Log.d(TAG, "Search Filer Call Back String = "+param1 + " String2 = "+param2 + " String3 = "+param3);
-
-                Log.d(TAG, "Search Filer Call Back Sort Value = "+sort);
-
-                Log.d(TAG, "Date is = "+date);
+                searchView.clearFocus();
+                nyTimesArticleList.clear();
+                scrollListener.resetState();
+                nyTimesListAdapter.notifyDataSetChanged();
 
                 saveSearchData(date,sort,param1,param2,param3);
-                getFilteredArticleList(date, sort, param1, param2, param3, 0,rvNYtimesArticleList);
+                getFilteredArticleList(query,date, sort, param1, param2, param3, 0,rvNYtimesArticleList);
 
             }
         });
@@ -317,6 +261,10 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
     private String getNewDeskString(String param1, String param2, String param3) {
 
+        if (param1 == null && param2 == null && param3 == null) {
+            return null;
+        }
+
         StringBuilder newDeskString = new StringBuilder();
 
         newDeskString.append("news_desk:(");
@@ -333,12 +281,8 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
         if (param3!= null && !param3.isEmpty()) {
             newDeskString.append(param3);
-            newDeskString.append(" ");
         }
         newDeskString.append(")");
-
-        Log.d(TAG, "newDeskString = "+newDeskString.toString());
-
         return newDeskString.toString();
     }
 

@@ -49,7 +49,7 @@ public class NYTimesRepository {
         return nyTimesService.getArticles(query,page,API_KEY);
     }
 
-    public Observable<SearchResult> getFilteredArticle(String date,String sort, String newDeskString, int page) {
-        return nyTimesService.getFilteredArticle(date,sort,newDeskString,page,API_KEY);
+    public Observable<SearchResult> getFilteredArticle(String query,String date,String sort, String newDeskString, int page) {
+        return nyTimesService.getFilteredArticle(query,date,sort,newDeskString,page,API_KEY);
     }
 }
