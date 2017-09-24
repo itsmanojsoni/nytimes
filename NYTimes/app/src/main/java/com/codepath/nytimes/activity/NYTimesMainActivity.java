@@ -250,6 +250,8 @@ public class NYTimesMainActivity extends AppCompatActivity {
 
         Log.d(TAG, "getFilteredArticleList date : "+date+ " sort = "+sort+ " offset = "+offset);
 
+        Log.d(TAG, "getFilteredArticleList Param 1 = "+param1+ " Param2 = "+param2+ " Param3 = "+param3);
+
         subscription = NYTimesRepository.getInstance()
                 .getFilteredArticle(date,sort, param1, param2, param3, offset)
                 .subscribeOn(Schedulers.io())
@@ -310,7 +312,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
         mSort = sort;
         mCategory1 = param1;
         mCategory2 = param2;
-        mCategory2 = param3;
+        mCategory3 = param3;
     }
 
 }

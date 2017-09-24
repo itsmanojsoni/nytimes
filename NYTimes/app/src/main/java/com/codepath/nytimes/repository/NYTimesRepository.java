@@ -1,6 +1,7 @@
 package com.codepath.nytimes.repository;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.codepath.nytimes.model.SearchResult;
 import com.codepath.nytimes.network.NYTimesService;
@@ -12,6 +13,8 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by manoj on 9/22/17.
@@ -48,7 +51,11 @@ public class NYTimesRepository {
 
     public Observable<SearchResult> getFilteredArticle(String date,String sort, String param1, String param2, String param3, int page) {
 
-        return nyTimesService.getFilteredArticle(date,sort,"news_desk:(\"Food\" \"Business\")",page,API_KEY);
+        String newdata = "news_desk:("+param1 + " " + param2 + " " + param3 + ")";
+
+        Log.d(TAG, "New Data is : "+newdata);
+
+        return nyTimesService.getFilteredArticle(date,sort,newdata,page,API_KEY);
     }
 
 
