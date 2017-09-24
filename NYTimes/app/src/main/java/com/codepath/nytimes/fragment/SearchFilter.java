@@ -1,8 +1,10 @@
 package com.codepath.nytimes.fragment;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +15,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.codepath.nytimes.R;
+
+import java.util.Calendar;
 
 import static android.R.attr.value;
 import static android.content.ContentValues.TAG;
@@ -26,10 +31,20 @@ import static com.codepath.nytimes.R.id.btnSave;
  * Created by manoj on 9/23/17.
  */
 
-public class SearchFilter extends DialogFragment{
+public class SearchFilter extends DialogFragment implements DatePickerFragment.DatePickerDialogListener {
+
+
+    @Override
+    public void onDateSelected(String date) {
+
+        Log.d(TAG, "on Date Selected and date is : "+date);
+        this.date = date;
+        dateSelect.setText(date);
+        dateSelect.setFocusable(false);
+    }
 
     public interface SearchFilterDialogueListener {
-        void onSaveSearchFilterDone(String sort, String param1, String param2, String param3);
+        void onSaveSearchFilterDone(String date, String sort, String param1, String param2, String param3);
     }
 
     SearchFilterDialogueListener listener;
@@ -38,6 +53,8 @@ public class SearchFilter extends DialogFragment{
 
     private CompoundButton.OnCheckedChangeListener checkedChangeListener;
     private  Spinner spinner;
+    private String date;
+    private  EditText dateSelect;
 
     private String param1, param2,param3;
     public SearchFilter() {
@@ -104,7 +121,7 @@ public class SearchFilter extends DialogFragment{
             public void onClick(View view) {
                 String sort = spinner.getSelectedItem().toString();
 
-                listener.onSaveSearchFilterDone(sort, param1,param2,param3);
+                listener.onSaveSearchFilterDone(date, sort, param1,param2,param3);
                 dismiss();
             }
         });
@@ -121,8 +138,17 @@ public class SearchFilter extends DialogFragment{
         spinner.setAdapter(adapter);
 
 
+        // Date Picker
+        dateSelect  = (EditText) view.findViewById(R.id.etDateSelect);
 
+        dateSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog(view);
+            }
+        });
     }
+
 
     @Override
     public void onResume() {
@@ -142,6 +168,15 @@ public class SearchFilter extends DialogFragment{
         art.setOnCheckedChangeListener(checkedChangeListener);
         fashion.setOnCheckedChangeListener(checkedChangeListener);
         sports.setOnCheckedChangeListener(checkedChangeListener);
+    }
+
+
+    private void showDatePickerDialog(View v) {
+        Log.d(TAG, "showDatePickerDialog");
+        FragmentManager fm = getFragmentManager();
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.setTargetFragment(SearchFilter.this, 300);
+        datePickerFragment.show(fm, "datePicker");
     }
 
 

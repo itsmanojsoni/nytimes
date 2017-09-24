@@ -224,10 +224,12 @@ public class NYTimesMainActivity extends AppCompatActivity {
         SearchFilter searchFilter = SearchFilter.newInstance("Some Title");
         searchFilter.setSearchFilterDialogueListener(new SearchFilter.SearchFilterDialogueListener() {
             @Override
-            public void onSaveSearchFilterDone(String sort, String param1, String param2, String param3) {
+            public void onSaveSearchFilterDone(String date, String sort, String param1, String param2, String param3) {
                 Log.d(TAG, "Search Filer Call Back String = "+param1 + " String2 = "+param2 + " String3 = "+param3);
 
                 Log.d(TAG, "Search Filer Call Back Sort Value = "+sort);
+
+                Log.d(TAG, "Date is = "+date);
             }
         });
         searchFilter.show(fm, "fragment_edit_name");

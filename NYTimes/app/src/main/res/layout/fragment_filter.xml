@@ -3,6 +3,32 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <LinearLayout
+        android:id="@+id/dateContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="32dp">
+
+        <TextView
+            android:id="@+id/beginDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/begin_date"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/etDateSelect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:layout_marginLeft="16dp"
+            android:inputType="date"
+            android:hint="@string/set_date"/>
+
+    </LinearLayout>
 
     <Spinner
         android:id="@+id/spinnerSort"
@@ -10,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
         android:layout_marginTop="16dp"
+        android:layout_below="@+id/dateContainer"
         android:entries="@array/sort_array"
          />
 

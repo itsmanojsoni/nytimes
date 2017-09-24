@@ -4,4 +4,6 @@
     <string name="art">art</string>
     <string name="fashion">fashion</string>
     <string name="sports">sports</string>
+    <string name="set_date">Set Date</string>
+    <string name="begin_date">Begin Date :</string>
 </resources>
