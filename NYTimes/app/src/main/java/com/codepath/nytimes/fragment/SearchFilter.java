@@ -57,8 +57,6 @@ public class SearchFilter extends DialogFragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
         checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton view, boolean checked) {
@@ -90,7 +88,6 @@ public class SearchFilter extends DialogFragment{
             }
         };
 
-        setupCheckboxes(view);
 
         Button btnSave = view.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +98,9 @@ public class SearchFilter extends DialogFragment{
                 dismiss();
             }
         });
+
+        setupCheckboxes(view);
+
 
 
 
