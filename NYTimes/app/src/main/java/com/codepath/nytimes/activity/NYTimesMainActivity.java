@@ -3,6 +3,7 @@ package com.codepath.nytimes.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -25,6 +26,7 @@ import com.codepath.nytimes.repository.NYTimesRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,7 +36,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import android.support.v7.widget.SearchView;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import static android.R.attr.data;
 import static android.media.CamcorderProfile.get;
 
 public class NYTimesMainActivity extends AppCompatActivity {
@@ -200,7 +204,8 @@ public class NYTimesMainActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        Log.d(TAG, "In onError()");
+                        Toast.makeText(getApplicationContext(), (String)getErrorMessage(e),
+                                Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -273,6 +278,23 @@ public class NYTimesMainActivity extends AppCompatActivity {
         }
         newDeskString.append(")");
         return newDeskString.toString();
+    }
+
+    private String getErrorMessage(Throwable throwable) {
+        String errorMsg = getResources().getString(R.string.error_msg_unknown);
+
+        if (!isNetworkConnected()) {
+            errorMsg = getResources().getString(R.string.error_msg_no_internet);
+        } else if (throwable instanceof TimeoutException) {
+            errorMsg = getResources().getString(R.string.error_msg_timeout);
+        }
+
+        return errorMsg;
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
     }
 
 }
