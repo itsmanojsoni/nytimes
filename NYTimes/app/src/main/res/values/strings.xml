@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">NYTimes</string>
     <string name="save">Save</string>
+    <string name="art">art</string>
+    <string name="fashion">fashion</string>
+    <string name="sports">sports</string>
 </resources>

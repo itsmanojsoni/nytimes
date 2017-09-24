@@ -8,9 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.codepath.nytimes.R;
+
+import static com.codepath.nytimes.R.id.btnSave;
 
 /**
  * Created by manoj on 9/23/17.
@@ -48,19 +52,41 @@ public class SearchFilter extends DialogFragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Get field from view
-//        mEditText = (EditText) view.findViewById(R.id.txt_your_name);
-//        // Fetch arguments from bundle and set title
-//        String title = getArguments().getString("title", "Enter Name");
-//        getDialog().setTitle(title);
-//        // Show soft keyboard automatically and request focus to field
-//        mEditText.requestFocus();
-//        getDialog().getWindow().setSoftInputMode(
-//                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
+
+
+        CompoundButton.OnCheckedChangeListener checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton view, boolean checked) {
+
+                switch(view.getId()) {
+                    case R.id.checkbox_art:
+                        if (checked) {
+
+                        } else {
+
+                        }
+                        break;
+                    case R.id.checkbox_fashion:
+                        if (checked) {
+
+                        } else {
+
+                        }
+                        break;
+                    case R.id.checkbox_sports:
+                        if (checked) {
+
+                        } else {
+
+                        }
+                        break;
+                }
+
+            }
+        };
 
         Button btnSave = view.findViewById(R.id.btnSave);
-
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +95,8 @@ public class SearchFilter extends DialogFragment{
                 dismiss();
             }
         });
+
+
 
     }
 

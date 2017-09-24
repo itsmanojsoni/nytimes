@@ -1,25 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:text="Just Check if Working"
+
+    <LinearLayout
+        android:id="@+id/checkbox"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="32dp"
+        android:layout_alignParentLeft="true">
+        <CheckBox android:id="@+id/checkbox_art"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/art" />
+        <CheckBox android:id="@+id/checkbox_fashion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/fashion" />
+        <CheckBox android:id="@+id/checkbox_sports"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sports"
+            android:textSize="20sp"/>
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/checkbox"
         android:gravity="center"
         android:text="@string/save"
         android:textStyle="bold"
-        android:textSize="20sp"
-        android:textColor="@color/colorWhite"
-        android:background="@color/colorLightBlue"
-        android:layout_alignParentBottom="true"/>
+        android:textSize="22sp"
+        android:textColor="@color/colorBlack"
+        android:background="@color/colorLightBlue" />
 
 </RelativeLayout>
