@@ -80,13 +80,12 @@ public class NYTimesMainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 Log.d(TAG, "article clicked at position");
-                Intent i = new Intent(getApplicationContext(), ArticleDetailActivity.class);
+                Intent inte = new Intent(getApplicationContext(), ArticleDetailActivity.class);
                 // put "extras" into the bundle for access in the second activity
-
                 String webUrl = nyTimesArticleList.get(position).getWeb_url();
-                i.putExtra("webUrl", webUrl);
+                inte.putExtra("webUrl", webUrl);
                 // brings up the second activity
-                startActivity(i);
+                startActivity(inte);
             }
         });
 
