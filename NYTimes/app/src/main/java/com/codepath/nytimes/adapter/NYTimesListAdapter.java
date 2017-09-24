@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.nytimes.R;
+import com.codepath.nytimes.model.Multimedia;
 import com.codepath.nytimes.model.NYTimesArticle;
+import com.codepath.nytimes.util.DynamicHeightImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +47,7 @@ public class NYTimesListAdapter extends
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Todo Butterknife bindings
 
-        ImageView ivStoryThumbnail;
+        DynamicHeightImageView ivStoryThumbnail;
         TextView    tvTitle;
 
         public ViewHolder(View itemView) {
@@ -94,7 +96,10 @@ public class NYTimesListAdapter extends
 
         if (nyTimesArticle.getMultimediaList() != null && (nyTimesArticle.getMultimediaList().size() > 0)) {
             Log.d(TAG, "What is the Size = "+nyTimesArticle.getMultimediaList().size());
-            String thumbnailUrl = "http://www.nytimes.com/" + nyTimesArticle.getMultimediaList().get(0).getUrl();
+            Multimedia photo = nyTimesArticle.getMultimediaList().get(0);
+            String thumbnailUrl = "http://www.nytimes.com/" + photo.getUrl();
+
+            holder.ivStoryThumbnail.setHeightRatio(((double)photo.getHeight())/photo.getWidth());
             Glide.with(context).load(thumbnailUrl).dontAnimate().into(holder.ivStoryThumbnail);
         }
 
