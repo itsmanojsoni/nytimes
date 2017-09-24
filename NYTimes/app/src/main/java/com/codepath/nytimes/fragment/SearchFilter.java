@@ -23,10 +23,14 @@ import static com.codepath.nytimes.R.id.btnSave;
 public class SearchFilter extends DialogFragment{
 
     public interface SearchFilterDialogueListener {
-        void onSaveSearchFilterDone(String inputText);
+        void onSaveSearchFilterDone(String param1, String param2, String param3);
     }
 
     SearchFilterDialogueListener listener;
+
+    private CompoundButton.OnCheckedChangeListener checkedChangeListener;
+
+    private String param1, param2,param3;
     public SearchFilter() {
 
     }
@@ -55,30 +59,30 @@ public class SearchFilter extends DialogFragment{
 
 
 
-        CompoundButton.OnCheckedChangeListener checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton view, boolean checked) {
 
                 switch(view.getId()) {
                     case R.id.checkbox_art:
                         if (checked) {
-
+                            param1 = getResources().getString(R.string.art);
                         } else {
-
+                            param1 = "";
                         }
                         break;
                     case R.id.checkbox_fashion:
                         if (checked) {
-
+                            param2 = getResources().getString(R.string.fashion);
                         } else {
-
+                            param2 = "";
                         }
                         break;
                     case R.id.checkbox_sports:
                         if (checked) {
-
+                            param3 = getResources().getString(R.string.sports);
                         } else {
-
+                            param3 = "";
                         }
                         break;
                 }
@@ -86,12 +90,14 @@ public class SearchFilter extends DialogFragment{
             }
         };
 
+        setupCheckboxes(view);
+
         Button btnSave = view.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                listener.onSaveSearchFilterDone("Test");
+                listener.onSaveSearchFilterDone(param1,param2,param3);
                 dismiss();
             }
         });
@@ -107,6 +113,18 @@ public class SearchFilter extends DialogFragment{
 
     }
 
+    private void setupCheckboxes(View view){
+
+        CheckBox art = view.findViewById(R.id.checkbox_art);
+
+        CheckBox fashion = getView().findViewById(R.id.checkbox_fashion);
+
+        CheckBox sports = getView().findViewById(R.id.checkbox_sports);
+
+        art.setOnCheckedChangeListener(checkedChangeListener);
+        fashion.setOnCheckedChangeListener(checkedChangeListener);
+        sports.setOnCheckedChangeListener(checkedChangeListener);
+    }
 
 
 
