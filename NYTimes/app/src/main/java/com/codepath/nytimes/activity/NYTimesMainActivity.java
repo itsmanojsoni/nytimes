@@ -1,6 +1,7 @@
 package com.codepath.nytimes.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
@@ -33,6 +34,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import android.support.v7.widget.SearchView;
 import android.widget.EditText;
+
+import static android.media.CamcorderProfile.get;
 
 public class NYTimesMainActivity extends AppCompatActivity {
 
@@ -69,12 +72,21 @@ public class NYTimesMainActivity extends AppCompatActivity {
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        context = (Context) this;
+
 
         final GridLayoutManager layoutManager = new GridLayoutManager(this, COLUMN);
         nyTimesListAdapter = new NYTimesListAdapter(this,nyTimesArticleList, new NYTimesListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Log.d(TAG, "article clicked at position");
+                Intent i = new Intent(getApplicationContext(), ArticleDetailActivity.class);
+                // put "extras" into the bundle for access in the second activity
+
+                String webUrl = nyTimesArticleList.get(position).getWeb_url();
+                i.putExtra("webUrl", webUrl);
+                // brings up the second activity
+                startActivity(i);
             }
         });
 
@@ -86,7 +98,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount,RecyclerView view) {
-                loadMoreDate(page, view);
+                loadMoreData(page, view);
             }
         };
         // Adds the scroll listener to RecyclerView
@@ -153,7 +165,7 @@ public class NYTimesMainActivity extends AppCompatActivity {
     }
 
 
-    private void loadMoreDate(final int offset, final RecyclerView view) {
+    private void loadMoreData(final int offset, final RecyclerView view) {
 
         // Define the code block to be executed
         Runnable runnableCode = new Runnable() {
